@@ -7,6 +7,7 @@
 - [ ] Capturas si cambia la interfaz
 - [ ] No contiene claves, datos reales ni registros privados
 - [ ] No requiere acceso al servidor oficial
+- [ ] Leí LICENSE y puedo conceder el permiso necesario sobre mi aportación
 
 ## Efecto en reglas, seguridad o base de datos
 

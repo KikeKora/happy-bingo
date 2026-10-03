@@ -64,13 +64,18 @@ Solo se necesita para partidas reales en una instalación propia:
 El bridge genera registros y datos de investigación locales que se excluyen de Git.
 El propietario conserva su configuración oficial fuera del repositorio público.
 
-## Publicar una instalación propia
+## Publicación del proyecto oficial
 
-Consulta [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md). Aceptar una propuesta en GitHub
+La guía de [despliegue](docs/DESPLIEGUE.md) está destinada al propietario y a quienes
+tengan su autorización para publicar el proyecto oficial. Aceptar una propuesta en GitHub
 no publica cambios automáticamente. Este proyecto no incluye credenciales de despliegue en Actions.
 
 ## Licencias e imágenes
 
-La elección de licencia del código está pendiente del propietario; consulta
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) para imágenes y referencias a Dota 2.
+El [permiso limitado para contribuciones](LICENSE) permite copiar el código, modificarlo,
+probarlo localmente y enviar mejoras al proyecto oficial mediante forks y Pull Requests.
+No exige pago. No autoriza venderlo, reutilizarlo en otros productos ni ofrecer otro servicio
+público sin permiso adicional. Es una licencia propia, no una licencia abierta como MIT.
+Consulta [CONTRIBUTING.md](CONTRIBUTING.md) y [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+para las condiciones de aportaciones, imágenes y referencias a Dota 2.
 No se incluyen claves, perfiles reales, exportaciones de la base ni historiales privados de partidas.

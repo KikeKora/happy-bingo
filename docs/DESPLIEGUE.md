@@ -1,5 +1,9 @@
 # Despliegue manual
 
+Esta guía es para el propietario o personas con autorización para desplegar Happy Bingo oficial.
+El permiso comunitario de LICENSE permite desarrollo y propuestas; publicar un servicio ajeno
+requiere autorización adicional. Los colaboradores pueden usar el simulador y el entorno local.
+
 Los aportes públicos se prueban sin claves oficiales. El propietario publica una revisión aprobada
 por separado, desde un entorno confiable; nunca ejecuta directamente una rama de un fork con sus claves.
 

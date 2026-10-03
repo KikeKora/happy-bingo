@@ -2,6 +2,20 @@
 
 Gracias por ayudar a mejorar Happy Bingo. El propietario decide qué propuestas se incorporan.
 
+## Permiso para preparar y enviar mejoras
+
+Lee el [permiso limitado para contribuciones](LICENSE). Puedes crear un fork, descargar
+el código, modificarlo y ejecutar pruebas para preparar una mejora del proyecto oficial.
+Puedes publicar la propuesta en tu fork y enviarla como Pull Request; no necesitas pagar
+ni solicitar acceso al servidor. Este permiso no autoriza crear un servicio público independiente,
+revender el proyecto o reutilizarlo en otros productos.
+
+Al enviar una aportación conservas su autoría y concedes a KikeKora los derechos descritos
+en LICENSE para incorporarla, modificarla y publicar Happy Bingo. Solo aporta código que puedas
+licenciar; declara las dependencias y condiciones de terceros. La aceptación siempre la decide el propietario.
+
+## Pasos
+
 1. Abre un Issue para explicar el problema o la idea. No incluyas datos privados.
 2. Crea un **fork** del repositorio y una rama para un solo cambio.
 3. Instala con `npm ci`; ejecuta `npm test`.

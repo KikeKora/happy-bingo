@@ -1,6 +1,6 @@
 # Marcas, recursos gráficos y dependencias
 
-La licencia del código, cuando se adopte, no concede derechos sobre marcas o recursos de terceros.
+El permiso limitado de LICENSE no concede derechos sobre marcas o recursos de terceros.
 
 - Dota 2 y sus marcas pertenecen a Valve. Este proyecto comunitario no declara afiliación oficial.
 - `happy-ui.js` y `happy-dota-icons-v2.js` enlazan iconos de ítems desde el CDN de Steam/Valve.
@@ -10,9 +10,9 @@ La licencia del código, cuando se adopte, no concede derechos sobre marcas o re
   No se representan como capturas oficiales de Dota 2.
 - Los archivos `kike-*` y la portada identifican a Happy Games/Kike Kora. Su inclusión para
   revisar este proyecto no otorga permiso para usar la marca en otro producto.
-- Salvo autorización expresa del titular, las imágenes y marcas de `public/assets/` quedan
-  fuera de cualquier licencia MIT del código. Para redistribuir una variante usa recursos propios
-  o consigue permiso del titular aplicable.
+- Los recursos originales incluidos por su titular solo pueden copiarse y visualizarse para
+  preparar y revisar contribuciones, conforme a LICENSE. Su reutilización en otro producto y
+  el uso de la marca requieren autorización adicional. Este permiso no amplía derechos de terceros.
 - Las dependencias conservan sus propias licencias declaradas en los paquetes de npm.
 
 Si identificas un recurso cuyo titular o permiso de uso necesita aclararse, comunícalo al propietario

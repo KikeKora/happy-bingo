@@ -1,0 +1,81 @@
+Happy Bingo — Permiso limitado para contribuciones, versión 1
+Copyright (c) 2026 KikeKora y los respectivos autores de sus contribuciones.
+
+1. Finalidad y alcance
+
+Este permiso se aplica al código y a la documentación de Happy Bingo sobre los
+que sus autores puedan conceder derechos. Su finalidad es permitir que la
+comunidad prepare mejoras para el proyecto oficial mantenido por KikeKora en
+https://github.com/KikeKora/happy-bingo.
+
+Es una licencia propia de alcance limitado, no una licencia de código abierto
+estándar. Los derechos que no se conceden expresamente quedan reservados.
+No se exige pago para preparar o enviar contribuciones bajo este permiso.
+
+2. Actividades permitidas
+
+Se concede un permiso no exclusivo y gratuito para:
+
+a) consultar y copiar el código mediante clones locales o forks en GitHub;
+b) modificarlo, ejecutarlo y probarlo en entornos de desarrollo, con datos
+   ficticios o propios, exclusivamente para preparar o revisar contribuciones
+   al proyecto oficial;
+c) publicar esas modificaciones en forks y ramas de GitHub, y enviarlas como
+   Pull Requests, parches o propuestas al repositorio oficial;
+d) conservar las copias de trabajo y propuestas para su revisión y seguimiento.
+
+Las copias y propuestas deben conservar este permiso, los avisos de autoría y
+los avisos aplicables a recursos de terceros. Un fork debe identificarse como
+copia para contribuciones, sin presentarse como el servicio oficial.
+
+3. Actividades no autorizadas por este permiso
+
+Este permiso no autoriza distribuir o vender Happy Bingo como producto
+independiente, ofrecer una instalación pública ajena al proyecto oficial,
+reutilizar su código en otros productos ni otorgar a terceros permisos más
+amplios. Para esas actividades se requiere autorización adicional de los
+titulares aplicables. El propietario puede mantener y publicar su proyecto
+oficial, incluido su uso en los streams de Happy Games.
+
+No se concede acceso al servidor oficial, a sus credenciales ni a los datos de
+jugadores. Publicar una propuesta no permite modificar la instalación oficial.
+KikeKora decide qué contribuciones acepta y cuándo las publica.
+
+4. Permiso sobre las contribuciones enviadas
+
+Al enviar intencionadamente una contribución para su incorporación al proyecto,
+su autor declara que puede conceder los derechos necesarios e identifica los
+componentes de terceros y sus condiciones, si los hay. El autor conserva la
+titularidad de su aportación.
+
+El autor concede a KikeKora un permiso no exclusivo, mundial, gratuito,
+perpetuo e irrevocable sobre esa aportación para revisarla, usarla, modificarla,
+incorporarla, mantenerla, ejecutar el servicio oficial y distribuirla como parte
+de Happy Bingo bajo este permiso. Los demás participantes pueden revisarla y
+trabajar en ella dentro del alcance del apartado 2. No existe obligación de
+aceptar, publicar o remunerar una contribución.
+
+No envíes código de terceros con condiciones incompatibles ni información
+confidencial. Identifica y acuerda cualquier condición distinta antes de enviar
+la aportación; no se presupone su aceptación por el propietario.
+
+5. Marcas, imágenes y terceros
+
+Este permiso no concede derechos sobre marcas ni recursos de terceros.
+Consulta THIRD_PARTY_NOTICES.md. Los recursos gráficos originales que el
+titular haya incluido en el repositorio pueden visualizarse y copiarse dentro
+de los forks y pruebas del apartado 2, únicamente para preparar contribuciones;
+no se autoriza su reutilización en otros productos. Los recursos externos
+conservan sus condiciones propias y este permiso no las amplía.
+
+6. Relación con GitHub y derechos legales
+
+Este permiso no limita los derechos que GitHub y sus usuarios tengan conforme
+a los términos aplicables de GitHub, ni los usos permitidos por la ley que no
+requieran autorización. No modifica las licencias propias de las dependencias.
+
+7. Ausencia de garantía
+
+El código se ofrece tal cual, sin garantía de funcionamiento, disponibilidad
+o adecuación a un propósito. En la medida permitida por la ley, sus autores
+no asumen responsabilidad por daños derivados de su uso.

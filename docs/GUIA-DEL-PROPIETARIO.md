@@ -1,5 +1,13 @@
 # Tu flujo de revisión
 
+## Permiso de contribuciones elegido
+
+LICENSE permite a la comunidad copiar, modificar y probar el proyecto para proponerte mejoras.
+Las propuestas se envían mediante forks y Pull Requests. Es un permiso limitado de contribución;
+su texto no autoriza reutilizar el proyecto en otros productos o desplegar otro servicio público.
+Los autores conservan su autoría y te conceden permiso para mantener sus aportaciones en Happy Bingo.
+Este documento expresa permisos de uso; los controles de acceso a GitHub y al servidor son separados.
+
 ## Configuración inicial de la cuenta y repositorio
 
 1. Crea y verifica tu cuenta en https://github.com/signup; el plan Free sirve para este proyecto público.
