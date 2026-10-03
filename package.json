@@ -1,0 +1,20 @@
+{
+  "name": "happy-bingo-online",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "preflight": "node ./local/happy-bingo-preflight.cjs",
+    "test-events": "node ./local/happy-bingo-test-events.mjs",
+    "test-balance": "node ./local/happy-bingo-test-balance-v5.mjs",
+    "test": "npm run test-events && npm run test-balance"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "happy-bingo-community",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-14",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "BINGO_ROOM",
+        "class_name": "BingoRoom"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "BingoRoom"
+      ]
+    }
+  ],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "HAPPY_DB",
+      "database_name": "happy-bingo-community",
+      "database_id": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+/* Mantiene las dimensiones, transparencia y temporizadores de OBS. */
+:root{--cyan:#76ded5;--pink:#e6c58a;--yellow:#f1d389;--stroke:#b69a61;--muted:#d5e4df;--line:#b69a6155;--bg:#102d3e;--bg2:#21434c}
+.card,.rankCard,.panel,.finalCard{background:linear-gradient(145deg,#153542f5,#102832f5)!important;border-color:#b69a61!important;border-image:url('/assets/happy-map-frame.png') 150 / 8px / 0 stretch!important;box-shadow:0 12px 28px #0007!important}
+.badge,.gameStatus{background:linear-gradient(#513b28,#2c2923)!important;border-color:#bda069!important}
+.title,.rankTitle b,.titleWrap strong,.finalTitle{font-family:Georgia,'Times New Roman',serif!important;font-style:normal!important;text-transform:none!important;color:#fff0c9!important;letter-spacing:0!important}
+.scorePill{background:linear-gradient(#f8dfa0,#d0a54a)!important;border-color:#b58e42!important}.rankTop,.header{border-bottom-color:#aa905650!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

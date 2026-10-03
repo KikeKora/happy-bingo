@@ -1,0 +1,4 @@
+{
+  "workerUrl": "https://happy-bingo-online.TU_SUBDOMINIO.workers.dev",
+  "eventToken": "PEGA_AQUI_EL_MISMO_EVENT_TOKEN_QUE_CONFIGURASTE_EN_CLOUDFLARE"
+}

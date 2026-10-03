@@ -1,0 +1,4 @@
+# Valores ficticios para desarrollo local. Copia como .dev.vars y cámbialos.
+# En producción utiliza wrangler secret put con dos claves aleatorias distintas.
+ADMIN_TOKEN=local-admin-example-not-for-production
+EVENT_TOKEN=local-event-example-not-for-production
