@@ -7,6 +7,7 @@ Happy Swap, reconocimientos y overlays de OBS. Interfaz en español para computa
 - Juego oficial: https://happy-bingo-online.kikekora.workers.dev/
 - Simulador oficial con datos ficticios: https://happy-bingo-online.kikekora.workers.dev/simulador
 - Cómo proponer cambios: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Video de introducción integrado: [guía y mantenimiento](docs/VIDEO-DE-INTRODUCCION.md)
 - Seguridad: [SECURITY.md](SECURITY.md)
 - Guía para quien administra: [docs/GUIA-DEL-PROPIETARIO.md](docs/GUIA-DEL-PROPIETARIO.md)
 
