@@ -9,7 +9,8 @@
     "preflight": "node ./local/happy-bingo-preflight.cjs",
     "test-events": "node ./local/happy-bingo-test-events.mjs",
     "test-balance": "node ./local/happy-bingo-test-balance-v5.mjs",
-    "test": "npm run test-events && npm run test-balance"
+    "test-assets": "node ./local/happy-bingo-test-assets.mjs",
+    "test": "npm run test-events && npm run test-balance && npm run test-assets"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

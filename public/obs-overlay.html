@@ -246,7 +246,7 @@
       if(!top.length) return;
       if(rankingHideTimer){ clearTimeout(rankingHideTimer); rankingHideTimer=null; }
       const rows=top.map((p,i)=>`<div class="rankRow"><span class="rankPos">#${i+1}</span><span class="rankName">${esc(p.name||'Jugador')}${p.bingo?' <em>★ BINGO</em>':''}</span><span class="rankPts">${Number(p.roundPoints||0)} pts</span></div>`).join('');
-      rankSummary.innerHTML=`<div class="rankCard"><div class="rankTop"><img src="/assets/kike-eso.png" alt=""><div class="rankTitle"><b>${esc(reason)}</b><span>Ronda ${esc(state.round??'—')} · Top 5 actual</span></div><span class="rankPlayers">${Number(state.participants||0)} jugando</span></div><div class="rankRows">${rows}</div></div>`;
+      rankSummary.innerHTML=`<div class="rankCard"><div class="rankTop"><img src="/assets/kike-eso.webp" alt=""><div class="rankTitle"><b>${esc(reason)}</b><span>Ronda ${esc(state.round??'—')} · Top 5 actual</span></div><span class="rankPlayers">${Number(state.participants||0)} jugando</span></div><div class="rankRows">${rows}</div></div>`;
       requestAnimationFrame(()=>rankSummary.classList.add('show'));
       rankingHideTimer=setTimeout(()=>hideRanking(false),RANK_SHOW_MS);
     }
@@ -289,7 +289,7 @@
       const awardsHtml=awards.map(a=>`<div class="awardChip"><span class="awardIcon">${esc(a.icon||'★')}</span><div><b>${esc(a.title||'Reconocimiento')}</b><br>${esc(a.name||'')}</div></div>`).join('');
       outer.innerHTML=`
         <div class="finalCard">
-          <div class="finalHero"><img src="/assets/kike-risa.png" alt="Kike Kora chibi"></div>
+          <div class="finalHero"><img src="/assets/kike-risa.webp" alt="Kike Kora chibi"></div>
           <div class="finalMain">
             <div class="finalTag">🏆 Cierre de ronda</div>
             <div class="finalTitle">MVP DE LA RONDA</div>
@@ -398,7 +398,7 @@
         <div class="card">
           <div class="heroWrap">
             <div class="heroHalo"></div>
-            <img src="${data.type === 'bingo' ? '/assets/kike-risa.png' : '/assets/kike-eso.png'}" alt="Kike Kora chibi">
+            <img src="${data.type === 'bingo' ? '/assets/kike-risa.webp' : '/assets/kike-eso.webp'}" alt="Kike Kora chibi">
           </div>
           <div class="copy">
             <div class="eyebrow"><span class="flash">⚡</span>${announcementEyebrow(data.type)}</div>

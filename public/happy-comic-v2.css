@@ -69,7 +69,7 @@ body:before{
   min-height:710px!important;padding:0!important;overflow:hidden!important;
   background:
     linear-gradient(90deg,rgba(0,5,15,0) 68%,rgba(0,8,20,.36) 100%),
-    url('/assets/happy-bingo-cover-v2.png') center center/cover no-repeat!important;
+    url('/assets/happy-bingo-cover-v2.webp') center center/cover no-repeat!important;
   border-color:#0aa9ef!important;
   box-shadow:10px 12px 0 rgba(0,0,0,.55),0 0 42px rgba(0,167,255,.16)!important;
 }
@@ -109,7 +109,7 @@ body:before{
 .chooseWrap{position:relative}
 .chooseWrap:before{
   content:"";position:absolute;inset:0 auto auto 50%;transform:translateX(-50%);width:100vw;height:220px;z-index:-1;
-  background:linear-gradient(180deg,rgba(0,167,255,.14),transparent),url('/assets/happy-bingo-cover-v2.png') center 22%/cover no-repeat;
+  background:linear-gradient(180deg,rgba(0,167,255,.14),transparent),url('/assets/happy-bingo-cover-v2.webp') center 22%/cover no-repeat;
   opacity:.16;filter:saturate(.8) contrast(1.1)
 }
 .chooseHead{padding:18px 18px 14px;background:rgba(3,14,29,.84);border-left:5px solid var(--comic-blue);box-shadow:7px 8px 0 rgba(0,0,0,.35)}
@@ -127,7 +127,7 @@ body:before{
 .brandSide{
   background:
     linear-gradient(180deg,rgba(5,25,46,.96),rgba(2,11,23,.98)),
-    url('/assets/happy-bingo-cover-v2.png') 20% 20%/cover no-repeat!important;
+    url('/assets/happy-bingo-cover-v2.webp') 20% 20%/cover no-repeat!important;
   border-width:2px!important;
 }
 .brandSide:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 48%,rgba(0,0,0,.35));pointer-events:none}
