@@ -12,7 +12,7 @@
     "test": "npm run test-events && npm run test-balance"
   },
   "devDependencies": {
-    "wrangler": "^4.0.0"
+    "wrangler": "^4.148.0"
   },
   "engines": {
     "node": ">=22"
