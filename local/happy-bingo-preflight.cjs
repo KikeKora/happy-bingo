@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const EXPECTED_PROTOCOL = 2;
-const MIN_BRIDGE_VERSION = '1.2.0';
+const MIN_BRIDGE_VERSION = '1.3.1';
 const CONFIG_FILE = path.join(__dirname, 'happy-bingo-online-config.json');
 
 function ok(label, detail='') { console.log(`PASS  ${label}${detail ? ' - ' + detail : ''}`); }
@@ -66,13 +66,20 @@ async function main(){
   if(bridge.lastMatchTickAt) ok('MATCH_TICK activo', bridge.lastMatchTickAt);
   else warn('MATCH_TICK activo', 'todavia no se ha generado; cambia una estadistica en partida');
 
-  if(bridge.lastItemAt) ok('Eventos de compra', bridge.lastItemAt);
-  else warn('Eventos de compra', 'todavia no se ha detectado una compra en esta sesion');
+  if(bridge.lastItemAt) ok('Objetos adquiridos', bridge.lastItemAt);
+  else warn('Objetos adquiridos', 'todavia no se ha detectado un cambio de inventario en esta sesion');
+
+  if(bridge.telemetry?.schemaVersion===2 && !bridge.telemetry.errors) ok('Captura ampliada GSI', `${bridge.telemetry.fieldPaths} campos, ${bridge.telemetry.capturedBlocks.length} bloques observados`);
+  else fail('Captura ampliada GSI','revisar errores del colector');
+  if(bridge.telemetry?.rawSkipped) warn('Archivo completo GSI', 'se alcanzo el limite local; exporta los registros antes de ampliar el limite');
+  if(bridge.telemetry?.mode && bridge.telemetry.mode!=='player') warn('Modo de captura',bridge.telemetry.mode+'; espectador/replay no otorga puntos del bingo');
+  if(bridge.telemetry?.missingMetrics?.length) warn('Metricas aun no recibidas',bridge.telemetry.missingMetrics.join(', '));
+  if(bridge.openDota) ok('Presupuesto OpenDota',JSON.stringify(bridge.openDota.usage ?? bridge.openDota.budget ?? {}));
 
   const hardFail = Number(worker.eventProtocolVersion)!==EXPECTED_PROTOCOL ||
     !semverGte(bridge.bridgeVersion,MIN_BRIDGE_VERSION) ||
     Number(bridge.eventProtocolVersion)!==EXPECTED_PROTOCOL ||
-    !bridge.protocolCompatible || Number(bridge.failedCount)>0;
+    !bridge.protocolCompatible || Number(bridge.failedCount)>0 || Number(bridge.telemetry?.errors)>0 || bridge.telemetry?.schemaVersion!==2;
 
   console.log('-----------------------------------------------');
   if(hardFail){

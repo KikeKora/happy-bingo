@@ -184,6 +184,219 @@ const LEGACY_RULES = [
   ["LH_25","Kike llega a 25 LH",15],["LH_50","Kike llega a 50 LH",20],["LH_100","Kike llega a 100 LH",35],["MIN_5","La partida llega a 5 min",10],["MIN_10","La partida llega a 10 min",10],["MIN_20","La partida llega a 20 min",15],["MIN_30","La partida llega a 30 min",20],["MIN_40","La partida llega a 40 min",30],["GAME_END","Termina la partida",15],["KIKE_WINS","Kike gana la partida",60]
 ].map(([id,label,points])=>({id,label,points,difficulty:"legacy",category:"legacy",series:id}));
 
+RULE_POOL.push(...[
+  {
+    "id": "OBS_WARDS_8",
+    "label": "Kike compra 8 Observer Wards",
+    "category": "vision",
+    "series": "live_vision",
+    "counter": "observerWardsPurchased",
+    "threshold": 8,
+    "points": 10,
+    "difficulty": "common",
+    "observedRate": 0.8,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "OBS_WARDS_12",
+    "label": "Kike compra 12 Observer Wards",
+    "category": "vision",
+    "series": "live_vision",
+    "counter": "observerWardsPurchased",
+    "threshold": 12,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.4,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "SENTRY_WARDS_15",
+    "label": "Kike compra 15 Sentry Wards",
+    "category": "vision",
+    "series": "live_vision",
+    "counter": "sentryWardsPurchased",
+    "threshold": 15,
+    "points": 10,
+    "difficulty": "common",
+    "observedRate": 0.8,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "SENTRY_WARDS_18",
+    "label": "Kike compra 18 Sentry Wards",
+    "category": "vision",
+    "series": "live_vision",
+    "counter": "sentryWardsPurchased",
+    "threshold": 18,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.4,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "DEWARD_OBS_3",
+    "label": "Kike destruye 3 Observer Wards enemigas",
+    "category": "deward",
+    "series": "live_deward",
+    "counter": "observerWardsDestroyed",
+    "threshold": 3,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.4,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "DEWARD_SENTRY_4",
+    "label": "Kike destruye 4 Sentry Wards enemigas",
+    "category": "deward",
+    "series": "live_deward",
+    "counter": "sentryWardsDestroyed",
+    "threshold": 4,
+    "points": 10,
+    "difficulty": "common",
+    "observedRate": 0.8,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "DEWARD_TOTAL_6",
+    "label": "Kike destruye 6 wards enemigas en total",
+    "category": "deward",
+    "series": "live_deward",
+    "counter": "wardsDestroyedTotal",
+    "threshold": 6,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.6,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "SMOKE_USE_2",
+    "label": "Kike activa Smoke 2 veces",
+    "category": "utility",
+    "series": "live_utility",
+    "counter": "smokeActivations",
+    "threshold": 2,
+    "points": 10,
+    "difficulty": "common",
+    "observedRate": 0.8,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "SMOKE_USE_3",
+    "label": "Kike activa Smoke 3 veces",
+    "category": "utility",
+    "series": "live_utility",
+    "counter": "smokeActivations",
+    "threshold": 3,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.6,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "BOUNTY_2",
+    "label": "Kike recoge 2 runas bounty",
+    "category": "exploration",
+    "series": "live_exploration",
+    "counter": "bountyRunesPickedUp",
+    "threshold": 2,
+    "points": 10,
+    "difficulty": "common",
+    "observedRate": 0.6,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "BOUNTY_4",
+    "label": "Kike recoge 4 runas bounty",
+    "category": "exploration",
+    "series": "live_exploration",
+    "counter": "bountyRunesPickedUp",
+    "threshold": 4,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.4,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "ROSHAN_1",
+    "label": "Roshan cae una vez, a manos de cualquier equipo",
+    "category": "objectives",
+    "series": "live_objectives",
+    "counter": "roshanDeaths",
+    "threshold": 1,
+    "points": 10,
+    "difficulty": "common",
+    "observedRate": 0.8,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "match"
+  },
+  {
+    "id": "ROSHAN_2",
+    "label": "Roshan cae 2 veces, a manos de cualquier equipo",
+    "category": "objectives",
+    "series": "live_objectives",
+    "counter": "roshanDeaths",
+    "threshold": 2,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.6,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "match"
+  },
+  {
+    "id": "AEGIS_2",
+    "label": "Se recogen 2 Aegis durante la partida",
+    "category": "objectives",
+    "series": "live_objectives",
+    "counter": "aegisPickups",
+    "threshold": 2,
+    "points": 20,
+    "difficulty": "medium",
+    "observedRate": 0.6,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "match"
+  },
+  {
+    "id": "BUYBACK_1",
+    "label": "Kike usa buyback durante la partida",
+    "category": "ending",
+    "series": "live_ending",
+    "counter": "buybacks",
+    "threshold": 1,
+    "points": 35,
+    "difficulty": "hard",
+    "observedRate": 0.2,
+    "provisional": true,
+    "evidenceMatches": 5,
+    "liveCounterScope": "local"
+  }
+]);
+
 const RULE_MAP = Object.fromEntries([...LEGACY_RULES, ...RULE_POOL].map(r => [r.id, r]));
 RULE_MAP.FREE = { id:"FREE", label:"HAPPY BINGO", points:0, difficulty:"free" };
 
@@ -212,6 +425,13 @@ function ruleDeadlineSeconds(rule){
   const m=String(rule?.id||'').match(/_(?:BY|AT)_(\d+)$/); return m?Number(m[1])*60:null;
 }
 function ruleFeasibleForLate(rule,meta){
+  if(['DUST_BY_15','SMOKE_BY_20'].includes(rule.id))return false;
+  if(rule.counter){
+    const st=meta.currentStats||{};
+    const m=rule.liveCounterScope==='match'?st.matchEventMetrics:st.liveEventMetrics;
+    if(m?.source!=='deduplicated-gsi-direct-events')return false;
+    if(matchesRule(rule.id,{telemetrySource:'dota-gsi',telemetryMode:'player',liveEventMetrics:st.liveEventMetrics,matchEventMetrics:st.matchEventMetrics}))return false;
+  }
   const occurred=new Set(meta.completedRuleIds||[]); if(occurred.has(rule.id)) return false;
   const clock=Number(meta.gameClock)||0; const deadline=ruleDeadlineSeconds(rule); if(deadline!=null&&clock>=deadline) return false;
   const st=meta.currentStats||{}; const d=Number(st.deaths||0);
@@ -801,11 +1021,10 @@ for (const [a,b] of INCOMPATIBLE_PAIRS) {
 // v5: 24 casillas no-FREE, con solo tres items y una categoria por eje. Esto
 // evita que combate/KDA/participacion dominen la tarjeta.
 const CATEGORY_SLOTS = [
-  "combat","support",{name:"teamfight",categories:["participation","kda"]},"combo",
-  { name:"fate", categories:["deaths","survival"] },
-  "multikill","farm","farm","items","items","items","tempo","economy",
+  "combat","support",{name:"fate",categories:["deaths","survival"]},
+  "farm","farm","items","items","items","tempo","economy",
   "liquidity","experience","progress","events","risk","recovery","vision",
-  "utility","team","pace","ending"
+  "utility","team","pace","ending","deward","exploration","objectives"
 ];
 
 // Item Compatibility v2 — familias y evidencia combinadas.
@@ -910,7 +1129,7 @@ function compatibleRule(rule, selected) {
   if(rule.category!=="items"&&selected.some(r=>broadFamily(r)===family)) return false;
   if(hasDeadline(rule)&&selected.filter(hasDeadline).length>=10) return false;
   const combatCategories=new Set(["combat","kda","support","combo","participation","deaths","survival","multikill"]);
-  if(combatCategories.has(rule.category)&&selected.filter(r=>combatCategories.has(r.category)).length>=6) return false;
+  if(combatCategories.has(rule.category)&&selected.filter(r=>combatCategories.has(r.category)).length>=3) return false;
 
   // Evitar una tarjeta con demasiadas apuestas tardias/especializadas. Mage
   // Slayer deja de contarse aqui: en la nueva muestra aparece 5/26 y 4/8 en
@@ -960,7 +1179,7 @@ function itemCoherenceScore(rules){
 
 function candidatesForSlot(slot, selected, context={}) {
   if (typeof slot === "string") {
-    return RULE_POOL.filter(r => r.category === slot && itemAllowedForContext(r,context) && compatibleRule(r, selected));
+    return RULE_POOL.filter(r => r.category === slot && !["DUST_BY_15","SMOKE_BY_20"].includes(r.id) && itemAllowedForContext(r,context) && compatibleRule(r, selected));
   }
 
   // Elegimos primero la familia, para que "fate" no favorezca supervivencia
@@ -1168,6 +1387,17 @@ function itemEvent(e, item){ return e.type === "ITEM_ACQUIRED" && e.item === ite
 function teamKills(e){const team=String(e.kikeTeam||"").toLowerCase();return team.includes("radiant")||team==="team2"?Number(e.radiantScore||0):Number(e.direScore||0);}
 
 function matchesRule(ruleId,e){
+  const rule=RULE_MAP[ruleId];
+  if(rule?.counter){
+    if(e?.telemetrySource!=="dota-gsi"||e.telemetryMode!=="player")return false;
+    const metrics=rule.liveCounterScope==='match'?e.matchEventMetrics:e.liveEventMetrics;
+    if(metrics?.source!=="deduplicated-gsi-direct-events")return false;
+    const counts=metrics.observedCounts;
+    const value=rule.counter==='wardsDestroyedTotal'
+      ?(typeof counts?.observerWardsDestroyed==='number'&&typeof counts?.sentryWardsDestroyed==='number'?counts.observerWardsDestroyed+counts.sentryWardsDestroyed:null)
+      :counts?.[rule.counter];
+    return typeof value==='number'&&Number.isFinite(value)&&value>=rule.threshold;
+  }
   switch(ruleId){
     // COMBATE
     case "KILLS_5_BY_25": return isStats(e)&&e.kills>=5&&byClock(e,1500);
@@ -1439,6 +1669,7 @@ export class BingoRoom {
       phase:phaseForMeta(this.meta),
       gameClock:this.meta.gameClock,
       gameStatus:this.meta.gameStatus,
+      matchStartAnnouncement:this.meta.matchStartAnnouncement||null,
       swap:this.swapStatus(),
       top:this.roundRanking().slice(0,10),
       connections,
@@ -1856,10 +2087,27 @@ export class BingoRoom {
 
   async applyEvent(request) {
     const event=await request.json(); if(!event||!event.type)return json({error:'Evento invalido.'},400);
+    if(event.type==='MATCH_DETECTED'){
+      const id=String(event.matchId||'');
+      if(!/^[1-9]\d+$/.test(id))return json({ok:true,ignored:'invalid_match'});
+      if(this.meta.currentMatchId===id)return json({ok:true,duplicate:true});
+      const early=typeof event.clock==='number'&&event.clock<=120;
+      if(early&&(this.meta.gameStatus==='finished'||this.meta.currentMatchId)){
+        const reset=await this.adminAction(new Request('https://local/room/admin',{method:'POST',body:JSON.stringify({action:'new-round'})}));
+        if(!reset.ok)return reset;
+      }
+      this.meta.currentMatchId=id;
+      this.meta.matchStartAnnouncement=early?{id,startedAt:Date.now(),expiresAt:Date.now()+15000}:null;
+      if(early){this.meta.registrationOpen=true;this.meta.gameStatus='active';}
+      this.meta.gameClock=event.clock;
+      await this.persistMeta();this.broadcastPublicState();
+      return json({ok:true,matchDetected:true,announcement:early});
+    }
+    if(event.matchId&&this.meta.currentMatchId&&String(event.matchId)!==this.meta.currentMatchId)return json({ok:true,ignored:'different_match'});
     this.meta.eventCount++;
     if(Number.isFinite(Number(event.clock))){this.meta.gameClock=Number(event.clock);if(event.clock>=0&&this.meta.gameStatus!=='finished')this.meta.gameStatus='active';}
     if(event.heroName)this.meta.currentHero=normalizeHeroName(event.heroName);
-    if(isStats(event)) this.meta.currentStats={kills:Number(event.kills||0),deaths:Number(event.deaths||0),assists:Number(event.assists||0),lastHits:Number(event.lastHits||0),denies:Number(event.denies||0),killStreak:Number(event.killStreak||0),gold:Number(event.gold||0),gpm:Number(event.gpm||0),xpm:Number(event.xpm||0),level:Number(event.level||0),hpPercent:Number(event.hpPercent||0),alive:event.alive!==false,radiantScore:Number(event.radiantScore||0),direScore:Number(event.direScore||0),kikeTeam:event.kikeTeam||null};
+    if(isStats(event)) this.meta.currentStats={kills:Number(event.kills||0),deaths:Number(event.deaths||0),assists:Number(event.assists||0),lastHits:Number(event.lastHits||0),denies:Number(event.denies||0),killStreak:Number(event.killStreak||0),gold:Number(event.gold||0),gpm:Number(event.gpm||0),xpm:Number(event.xpm||0),level:Number(event.level||0),hpPercent:Number(event.hpPercent||0),alive:event.alive!==false,radiantScore:Number(event.radiantScore||0),direScore:Number(event.direScore||0),kikeTeam:event.kikeTeam||null,liveEventMetrics:event.liveEventMetrics||null,matchEventMetrics:event.matchEventMetrics||null};
     const globalDone=new Set(this.meta.completedRuleIds||[]); for(const r of RULE_POOL)if(matchesRule(r.id,event))globalDone.add(r.id);this.meta.completedRuleIds=[...globalDone];
     const auto=this.autoFinalizeSelections(); for(const uid of auto)await this.persistParticipant(uid);
     const c=Number(this.meta.gameClock), startSwap=Number(this.meta.swapMinute||0)*60;
@@ -2079,7 +2327,7 @@ export default {
     const url=new URL(request.url); const stub=room(env);
 
     if(request.method==="GET"&&url.pathname==="/api/health"){
-      return json({ok:true,service:"Happy Games Cell Engine v3",eventProtocolVersion:2,timedRulesEngineVersion:2,balanceGeneratorVersion:5,supportTelemetryVersion:2,matchTickRequired:true,happyId:!!env.HAPPY_DB,persistentPoints:!!env.HAPPY_DB,analytics:!!env.HAPPY_DB,analyticsVersion:2,roundAwardsVersion:1,obsRoundFinalVersion:1,participationStreaksVersion:1,cellEngineVersion:3});
+      return json({ok:true,service:"Happy Games Cell Engine v3",eventProtocolVersion:2,timedRulesEngineVersion:2,balanceGeneratorVersion:6,supportTelemetryVersion:3,obsMatchStartVersion:1,matchTickRequired:true,happyId:!!env.HAPPY_DB,persistentPoints:!!env.HAPPY_DB,analytics:!!env.HAPPY_DB,analyticsVersion:2,roundAwardsVersion:1,obsRoundFinalVersion:1,participationStreaksVersion:1,cellEngineVersion:3});
     }
     if(request.method==="GET"&&url.pathname==="/api/public"){
       return stub.fetch(new Request(new URL("/room/public-state",request.url),{method:"GET"}));
@@ -2181,4 +2429,4 @@ export default {
 
 
 // Named export used by the local, non-production self-test.
-export { matchesRule, randomCard, itemAllowedForContext, RULE_MAP };
+export { matchesRule, randomCard, itemAllowedForContext, RULE_MAP, ruleFeasibleForLate };

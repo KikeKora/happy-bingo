@@ -96,9 +96,21 @@ body{pointer-events:none}
 @keyframes swapPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes rankMove{0%{transform:translateX(0)}35%{transform:translateX(8px);background:rgba(100,241,255,.11)}100%{transform:translateX(0)}}
 @media(max-width:1200px){.hud{width:350px}.titleWrap strong{font-size:24px}.row{height:34px}.name{font-size:13px}}
-</style>
+.matchStart{position:fixed;z-index:9;left:50%;bottom:38px;width:min(850px,calc(100vw - 48px));box-sizing:border-box;padding:29px 32px 29px 116px;color:#fff0c9;background:linear-gradient(110deg,#163c45f7,#102832fa);border:8px solid #b69a61;border-image:url('/assets/happy-map-frame.webp') 150 / 8px / 0 stretch;box-shadow:0 16px 40px #0007;opacity:0;transform:translate(-50%,28px);transition:opacity .35s,transform .45s;visibility:hidden}
+ .matchStart.visible{opacity:1;transform:translate(-50%,0);visibility:visible}
+ .matchStart img{position:absolute;left:22px;top:50%;transform:translateY(-50%);width:72px;height:72px;object-fit:contain}
+ .matchStart h1{font:700 34px/1.15 Georgia,serif;margin:5px 0 9px;color:#fff0c9}
+ .matchStart p{font:400 19px/1.4 Arial,sans-serif;margin:0;color:#e1eeea}
+ .matchStart .invite{color:#f1d389;font-weight:700}
+ @media(max-width:700px){.matchStart{padding:18px 20px 18px 82px;bottom:24px}.matchStart img{width:48px;height:48px;left:15px}.matchStart h1{font-size:25px}.matchStart p{font-size:16px}}
+ @media(prefers-reduced-motion:reduce){.matchStart{transition:none}}
+ </style>
 <link rel="stylesheet" href="/happy-stream-map-v6.css"></head>
 <body>
+ <section id="matchStart" class="matchStart" role="status" aria-live="polite">
+ <img src="/assets/kike-eso.webp" alt="">
+ <h1>¡Happy Bingo comenzó!</h1><p><span class="invite">Pide el enlace en el chat.</span> Juega y gana Happy Points.</p>
+ </section>
 <section id="gameStatus" class="gameStatus">
   <img src="/assets/kike-eso.webp" alt="Kike Kora">
   <div class="gameStatusCopy">
@@ -136,6 +148,7 @@ body{pointer-events:none}
 
 <div id="previewControls" class="previewControls">
   <button data-demo="inactive">Sin ronda</button>
+  <button data-demo="start">Inicio de partida</button>
   <button data-demo="normal">Ronda activa</button>
   <button data-demo="leader">Nuevo líder</button>
   <button data-demo="bingo">Bingo</button>
@@ -279,7 +292,20 @@ function renderSwap(swap){
   chip.style.display='none';swapBaseSeconds=null;lastSwapMilestone=null;
 }
 
-function render(data,trigger=true){
+const startPanel=document.getElementById('matchStart');
+ let startTimer;let seenStartId=null;
+ try{seenStartId=sessionStorage.getItem('happy-obs-last-match');}catch{}
+ function renderStart(data){
+   const start=data?.matchStartAnnouncement;
+   if(!start||start.id===seenStartId||data.gameStatus==='finished')return;
+   const remaining=Number(start.expiresAt)-Number(data.serverTs||Date.now());
+   if(remaining<=0)return;
+   seenStartId=start.id;try{sessionStorage.setItem('happy-obs-last-match',start.id);}catch{}
+   startPanel.classList.add('visible');clearTimeout(startTimer);
+   startTimer=setTimeout(()=>startPanel.classList.remove('visible'),Math.min(12000,remaining));
+ }
+ function render(data,trigger=true){
+   renderStart(data);
   const prev=lastData;
   const wasActive=isRoundActive(prev);
   lastData={...data,serverTs:Number(data?.serverTs||Date.now())};
@@ -362,7 +388,8 @@ if(PREVIEW){
   showPanel('Vista previa',9999999);
   controls.addEventListener('click',e=>{
     const b=e.target.closest('button');if(!b)return;const mode=b.dataset.demo;if(!mode)return;
-    if(mode==='hide'){hidePanel();return}
+    if(mode==='start'){seenStartId=null;hidePanel();render({...previewData(),matchStartAnnouncement:{id:'demo-'+Date.now(),expiresAt:Date.now()+15000}},false);return}
+    if(mode==='hide'){hidePanel();startPanel.classList.remove('visible');return}
     if(mode==='show'){showPanel('Vista previa',9999999);return}
     render(previewData(mode),mode!=='normal'&&mode!=='inactive');
     if(mode==='inactive'){hidePanel();return}

@@ -1,8 +1,11 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const { GsiCollector, metricsOf, modeOf, sourceEventClock } = require('./happy-games-gsi.cjs');
+const { createOpenDotaCollector } = require('./happy-games-opendota.cjs');
 
-const BRIDGE_VERSION = "1.2.0";
+const {RoleTracker}=require('./happy-games-roles.cjs');
+const BRIDGE_VERSION = "1.6.0";
 const EVENT_PROTOCOL_VERSION = 2;
 const TIMED_RULES_ENGINE_VERSION = 2;
 const PORT = Number(process.env.HAPPY_BINGO_PORT || 4010);
@@ -24,6 +27,8 @@ if (!WORKER_URL || !EVENT_TOKEN) {
 }
 
 let previous = null;
+let detectedMatchId=null;
+let previousLiveCounterSignature = null;
 let lowHp25Active = false;
 let lowHp10Active = false;
 let eventCount = 0;
@@ -42,6 +47,17 @@ let lastMatchTickAt = null;
 let lastItemAt = null;
 let lastEventAt = null;
 let lastEventType = null;
+let lastIgnoredGameplayReason = null;
+
+function gameplaySourceAllowed(data,mode) {
+  if(mode!=='player')return false;
+  const custom=String(data?.map?.customgamename ?? data?.map?.custom_game_name ?? '');
+  if(custom)return false;
+  const id=String(data?.map?.matchid ?? data?.map?.match_id ?? '');
+  if(/^\d+$/.test(id) && BigInt(id)>0n)return true;
+  // The existing test harness uses a non-numeric match ID and a local mock.
+  try{return ['localhost','127.0.0.1','::1'].includes(new URL(WORKER_URL).hostname);}catch{return false;}
+}
 
 function clockOf(data) {
   return data?.map?.clock_time ?? data?.map?.game_time ?? null;
@@ -64,7 +80,15 @@ function statSnapshot(data) {
     radiantScore:Number(data?.map?.radiant_score ?? 0),
     direScore:Number(data?.map?.dire_score ?? 0),
     kikeTeam:data?.player?.team_name ?? null,
-    heroName:data?.hero?.name ?? null
+    heroName:data?.hero?.name ?? null,
+    matchId:data?.map?.matchid ?? data?.map?.match_id ?? null,
+    liveMetrics:metricsOf(data?.player),
+    liveEventMetrics:liveTelemetry.latest?.mode==='player' && String(liveTelemetry.latest?.matchId)===String(data?.map?.matchid ?? data?.map?.match_id)
+      ?liveTelemetry.latest.liveEventMetrics:null,
+    matchEventMetrics:liveTelemetry.latest?.mode==='player'&&String(liveTelemetry.latest.matchId)===String(data?.map?.matchid ?? data?.map?.match_id)?liveTelemetry.latest.matchEventMetrics:null,
+    telemetrySource:'dota-gsi',
+    telemetryMode:modeOf(data),
+    ...roleTracker.assignment(data?.map?.matchid ?? data?.map?.match_id)
   };
 }
 function coreStatSnapshot(data){const s=statSnapshot(data);return {kills:s.kills,deaths:s.deaths,assists:s.assists,lastHits:s.lastHits,denies:s.denies,killStreak:s.killStreak};}
@@ -151,12 +175,15 @@ function processDirectEvents(data) {
     seenDirectEvents.add(fingerprint);
     if (!parsed?.type) continue;
 
-    if (parsed.type === "CHAT_MESSAGE_FIRSTBLOOD") emit("FIRST_BLOOD", { raw: parsed }, data);
+    const sourceTime = sourceEventClock(evt, parsed);
+    const timing = { eventClock:sourceTime.clock, eventClockSource:sourceTime.clockSource, receivedClock:clockOf(data) };
+    if (parsed.type === "CHAT_MESSAGE_FIRSTBLOOD") emit("FIRST_BLOOD", { ...timing, raw: parsed }, data);
 
     if (parsed.type === "CHAT_MESSAGE_HERO_KILL") {
       emit("HERO_KILL_EVENT", {
         killerPlayerId: parsed.playerid2,
         victimPlayerId: parsed.playerid1,
+        ...timing,
         raw: parsed
       }, data);
     }
@@ -165,6 +192,7 @@ function processDirectEvents(data) {
 
 function processStateChanges(data) {
   if (!previous) {
+    previousLiveCounterSignature=JSON.stringify([liveTelemetry.latest?.liveEventMetrics?.observedCounts ?? null,liveTelemetry.latest?.matchEventMetrics?.observedCounts ?? null]);
     if(data?.hero?.name)emit("HERO_SELECTED",{heroName:data.hero.name},data);
     const firstClock = clockOf(data);
     // If the bridge was restarted mid-match, rebuild the observable state once
@@ -274,7 +302,8 @@ function processStateChanges(data) {
       emit("ABILITY_CAST", {
         ability: ability.name || key,
         cooldown: cd,
-        ultimate: !!ability.ultimate
+        ultimate: !!ability.ultimate,
+        observation:'cooldown_started',castVerified:false
       }, data);
     }
   }
@@ -308,12 +337,15 @@ function processStateChanges(data) {
   const prevStats = coreStatSnapshot(previous);
   const currentStats = coreStatSnapshot(data);
   const statsChanged = Object.keys(currentStats).some(key => currentStats[key] !== prevStats[key]);
+  const liveCounterSignature=JSON.stringify(liveTelemetry.latest?.liveEventMetrics?.observedCounts ?? null);
+  const liveCountersChanged=!newMatch && previousLiveCounterSignature!==null && liveCounterSignature!==previousLiveCounterSignature;
+  previousLiveCounterSignature=liveCounterSignature;
   const ruleClockTargets = [180,600,900,1200,1500,1800,2100,2400,2700];
   const goldThresholdCrossed=[1500,2000,3000].some(target=>Number(previous?.player?.gold||0)<target&&Number(data?.player?.gold||0)>=target);
   const crossedRuleDeadline = Number.isFinite(prevClock) && Number.isFinite(clock) &&
     ruleClockTargets.some(target => prevClock < target && clock >= target);
-  if (statsChanged || crossedRuleDeadline || goldThresholdCrossed) {
-    emit("MATCH_TICK", { reason: statsChanged ? "stats_change" : crossedRuleDeadline ? "rule_deadline" : "gold_threshold" }, data);
+  if (statsChanged || crossedRuleDeadline || goldThresholdCrossed || liveCountersChanged) {
+    emit("MATCH_TICK", { reason: statsChanged ? "stats_change" : crossedRuleDeadline ? "rule_deadline" : goldThresholdCrossed ? "gold_threshold" : "live_event_counter" }, data);
   }
 
   const prevWinner = previous?.map?.win_team;
@@ -339,6 +371,14 @@ const RESEARCH_MATCHES = path.join(RESEARCH_DIR, "happy-bingo-support-matches.js
 const RESEARCH_DISCOVERED = path.join(RESEARCH_DIR, "happy-bingo-support-discovered-fields.json");
 
 fs.mkdirSync(RESEARCH_DIR, { recursive: true });
+const roleTracker=new RoleTracker(RESEARCH_DIR);
+const liveTelemetry = new GsiCollector({dir:RESEARCH_DIR,roleProvider:id=>roleTracker.assignment(id),maxRawBytes:Number(config.telemetry?.maxRawBytes)||8*1024**3});
+const openDota = createOpenDotaCollector({
+  dir:RESEARCH_DIR,
+  enabledLive:config.openDota?.live !== false,
+  enabledPostMatch:config.openDota?.postMatch !== false,
+  requestParsing:config.openDota?.requestParsing !== false
+});
 
 let researchPrevious = null;
 let researchMatch = null;
@@ -428,14 +468,17 @@ function researchSnapshot(data, minute) {
     alive: data?.hero?.alive ?? null,
     radiantScore: data?.map?.radiant_score ?? null,
     direScore: data?.map?.dire_score ?? null,
-    items: inventoryNames(data)
+    items: inventoryNames(data),
+    liveMetrics:metricsOf(data?.player),
+    telemetryMode:modeOf(data)
   };
 }
 
 function beginResearchMatch(data, reason = "first_payload") {
   const clock = clockOf(data);
   researchMatch = {
-    schemaVersion: 1,
+    schemaVersion: 2,
+    ...roleTracker.assignment(data?.map?.matchid ?? data?.map?.match_id),
     researchOnly: true,
     id: String(data?.map?.matchid || data?.map?.match_id || `local-${Date.now()}`),
     startedAt: new Date().toISOString(),
@@ -477,8 +520,9 @@ function finalizeResearchMatch(data, reason = "game_finished") {
   }
 
   try {
-    fs.appendFileSync(RESEARCH_MATCHES, JSON.stringify(researchMatch) + "\n", "utf8");
-    console.log(`\n[RESEARCH] Partida guardada (${reason}) -> ${path.relative(__dirname, RESEARCH_MATCHES)}`);
+    researchMatch=roleTracker.record(researchMatch);
+    if(researchMatch.matchMode==='normal'&&['support4','support5'].includes(researchMatch.role))fs.appendFileSync(RESEARCH_MATCHES, JSON.stringify(researchMatch) + "\n", "utf8");
+    console.log(`\n[RESEARCH] Partida guardada (${reason}) -> ${path.relative(__dirname, roleTracker.matchesFile)}`);
   } catch (e) {
     console.error("\n[RESEARCH] No pude guardar la partida:", e.message);
   }
@@ -621,13 +665,23 @@ function bridgeStatus() {
     lastItemAt,
     lastEventAt,
     lastEventType,
+    lastIgnoredGameplayReason,
     eventCount,
     sentCount,
-    failedCount
+    failedCount,
+    roleTracking:roleTracker.status(),
+    telemetry:liveTelemetry.status(),
+    openDota:openDota.status()
   };
 }
 
 const server = http.createServer((req, res) => {
+  if(roleTracker.handle(req,res))return;
+  if (req.method === 'GET' && req.url === '/telemetry') {
+    res.writeHead(200, {'content-type':'application/json; charset=utf-8','cache-control':'no-store'});
+    res.end(JSON.stringify(liveTelemetry.latest ?? {source:'dota-gsi',status:'waiting'}, null, 2));
+    return;
+  }
   if (req.method === "GET" && req.url === "/status") {
     res.writeHead(200, { "content-type": "application/json; charset=utf-8" });
     res.end(JSON.stringify(bridgeStatus(), null, 2));
@@ -640,15 +694,42 @@ const server = http.createServer((req, res) => {
   }
 
   let body = "";
-  req.on("data", chunk => body += chunk);
+  req.setEncoding('utf8');
+  let bodyBytes = 0;
+  let oversized = false;
+  req.on("data", chunk => {
+    bodyBytes += Buffer.byteLength(chunk,'utf8');
+    if(bodyBytes > 8 * 1024 * 1024) {
+      if(!oversized) { oversized=true;res.writeHead(413);res.end('GSI payload too large'); }
+      return;
+    }
+    body += chunk;
+  });
   req.on("end", () => {
+    if(oversized) return;
     try {
       const data = JSON.parse(body);
+      if(!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('Invalid GSI object');
       gsiPayloadCount++;
       lastGsiAt = new Date().toISOString();
-      processDirectEvents(data);
-      processStateChanges(data);
-      processResearch(data);
+      if(gameplaySourceAllowed(data,modeOf(data)))roleTracker.observe(data);
+      const captured = liveTelemetry.safeProcess(data);
+      const mode = captured?.context.mode ?? modeOf(data);
+      // Observer/replay feeds are saved, but cannot award a player's live Bingo.
+      if(gameplaySourceAllowed(data,mode)) {
+        lastIgnoredGameplayReason=null;
+        const freshData = captured ? {...data,events:captured.directEvents} : data;
+        const matchId=String(data?.map?.matchid ?? data?.map?.match_id ?? '');
+        if(/^[1-9]\d+$/.test(matchId)&&matchId!==detectedMatchId){
+          detectedMatchId=matchId;
+          emit('MATCH_DETECTED',{matchId},data);
+        }
+        processDirectEvents(freshData);
+        processStateChanges(freshData);
+        processResearch(data);
+        openDota.observe({matchId:captured?.context.matchId ?? data?.map?.matchid,clock:clockOf(data),
+          finished:!!data?.map?.win_team && data.map.win_team !== 'none',mode});
+      } else lastIgnoredGameplayReason=mode!=='player'?mode:'demo_custom_or_missing_match_id';
 
       process.stdout.write(
         `\rHappy Bingo Online | ${formatClock(clockOf(data))} | Eventos ${eventCount} | Enviados ${sentCount} | Fallos ${failedCount}   `
@@ -664,11 +745,14 @@ const server = http.createServer((req, res) => {
   });
 });
 
-process.on("SIGINT", () => {
+function shutdown() {
   if (researchMatch) finalizeResearchMatch(researchPrevious, "manual_stop");
+  try { liveTelemetry.close();openDota.close(); } catch(e) { console.error('Error al guardar telemetria:',e.message); }
   console.log("\nHappy Bingo detenido.");
   process.exit(0);
-});
+}
+process.on('SIGINT',shutdown);
+process.on('SIGTERM',shutdown);
 
 server.listen(PORT, "127.0.0.1", async () => {
   console.log("===============================================");
