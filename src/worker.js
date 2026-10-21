@@ -184,61 +184,62 @@ const LEGACY_RULES = [
   ["LH_25","Kike llega a 25 LH",15],["LH_50","Kike llega a 50 LH",20],["LH_100","Kike llega a 100 LH",35],["MIN_5","La partida llega a 5 min",10],["MIN_10","La partida llega a 10 min",10],["MIN_20","La partida llega a 20 min",15],["MIN_30","La partida llega a 30 min",20],["MIN_40","La partida llega a 40 min",30],["GAME_END","Termina la partida",15],["KIKE_WINS","Kike gana la partida",60]
 ].map(([id,label,points])=>({id,label,points,difficulty:"legacy",category:"legacy",series:id}));
 
+// Balance de visión 2026-10-21: 22 partidas Normal de support. IDs conservados para historial.
 RULE_POOL.push(...[
   {
     "id": "OBS_WARDS_8",
-    "label": "Kike compra 8 Observer Wards",
+    "label": "Kike compra 6 Observer Wards",
     "category": "vision",
     "series": "live_vision",
     "counter": "observerWardsPurchased",
-    "threshold": 8,
+    "threshold": 6,
     "points": 10,
     "difficulty": "common",
-    "observedRate": 0.8,
+    "observedRate": 0.625,
     "provisional": true,
-    "evidenceMatches": 5,
+    "evidenceMatches": 22,
     "liveCounterScope": "local"
   },
   {
     "id": "OBS_WARDS_12",
-    "label": "Kike compra 12 Observer Wards",
+    "label": "Kike compra 9 Observer Wards",
     "category": "vision",
     "series": "live_vision",
     "counter": "observerWardsPurchased",
-    "threshold": 12,
+    "threshold": 9,
     "points": 20,
     "difficulty": "medium",
-    "observedRate": 0.4,
+    "observedRate": 0.2917,
     "provisional": true,
-    "evidenceMatches": 5,
+    "evidenceMatches": 22,
     "liveCounterScope": "local"
   },
   {
     "id": "SENTRY_WARDS_15",
+    "label": "Kike compra 10 Sentry Wards",
+    "category": "vision",
+    "series": "live_vision",
+    "counter": "sentryWardsPurchased",
+    "threshold": 10,
+    "points": 10,
+    "difficulty": "common",
+    "observedRate": 0.625,
+    "provisional": true,
+    "evidenceMatches": 22,
+    "liveCounterScope": "local"
+  },
+  {
+    "id": "SENTRY_WARDS_18",
     "label": "Kike compra 15 Sentry Wards",
     "category": "vision",
     "series": "live_vision",
     "counter": "sentryWardsPurchased",
     "threshold": 15,
-    "points": 10,
-    "difficulty": "common",
-    "observedRate": 0.8,
-    "provisional": true,
-    "evidenceMatches": 5,
-    "liveCounterScope": "local"
-  },
-  {
-    "id": "SENTRY_WARDS_18",
-    "label": "Kike compra 18 Sentry Wards",
-    "category": "vision",
-    "series": "live_vision",
-    "counter": "sentryWardsPurchased",
-    "threshold": 18,
     "points": 20,
     "difficulty": "medium",
-    "observedRate": 0.4,
+    "observedRate": 0.375,
     "provisional": true,
-    "evidenceMatches": 5,
+    "evidenceMatches": 22,
     "liveCounterScope": "local"
   },
   {
@@ -257,16 +258,16 @@ RULE_POOL.push(...[
   },
   {
     "id": "DEWARD_SENTRY_4",
-    "label": "Kike destruye 4 Sentry Wards enemigas",
+    "label": "Kike destruye 3 Sentry Wards enemigas",
     "category": "deward",
     "series": "live_deward",
     "counter": "sentryWardsDestroyed",
-    "threshold": 4,
+    "threshold": 3,
     "points": 10,
     "difficulty": "common",
-    "observedRate": 0.8,
+    "observedRate": 0.6667,
     "provisional": true,
-    "evidenceMatches": 5,
+    "evidenceMatches": 22,
     "liveCounterScope": "local"
   },
   {
@@ -2327,7 +2328,7 @@ export default {
     const url=new URL(request.url); const stub=room(env);
 
     if(request.method==="GET"&&url.pathname==="/api/health"){
-      return json({ok:true,service:"Happy Games Cell Engine v3",eventProtocolVersion:2,timedRulesEngineVersion:2,balanceGeneratorVersion:6,supportTelemetryVersion:3,obsMatchStartVersion:1,matchTickRequired:true,happyId:!!env.HAPPY_DB,persistentPoints:!!env.HAPPY_DB,analytics:!!env.HAPPY_DB,analyticsVersion:2,roundAwardsVersion:1,obsRoundFinalVersion:1,participationStreaksVersion:1,cellEngineVersion:3});
+      return json({ok:true,service:"Happy Games Cell Engine v3",eventProtocolVersion:2,timedRulesEngineVersion:2,balanceGeneratorVersion:6,balanceRevision:"2026-10-21",supportTelemetryVersion:3,obsMatchStartVersion:1,matchTickRequired:true,happyId:!!env.HAPPY_DB,persistentPoints:!!env.HAPPY_DB,analytics:!!env.HAPPY_DB,analyticsVersion:2,roundAwardsVersion:1,obsRoundFinalVersion:1,participationStreaksVersion:1,cellEngineVersion:3});
     }
     if(request.method==="GET"&&url.pathname==="/api/public"){
       return stub.fetch(new Request(new URL("/room/public-state",request.url),{method:"GET"}));

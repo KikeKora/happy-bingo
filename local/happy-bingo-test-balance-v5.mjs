@@ -9,6 +9,14 @@ const contexts=[
   {mode:'strategist',heroName:'npc_dota_hero_venomancer'}
 ];
 
+// Rebalance de visión con 22 partidas Normal de support; IDs estables para historial.
+for(const [id,threshold] of Object.entries({OBS_WARDS_8:6,OBS_WARDS_12:9,SENTRY_WARDS_15:10,SENTRY_WARDS_18:15,DEWARD_SENTRY_4:3})){
+  const rule=RULE_MAP[id];
+  assert(rule.threshold===threshold,`${id}: umbral calibrado incorrecto`);
+  assert(rule.label.includes(String(threshold)),`${id}: etiqueta desactualizada`);
+  assert(rule.evidenceMatches===22,`${id}: evidencia incompleta`);
+}
+
 for(const context of contexts){
   const cards=[];
   for(let i=0;i<100;i++){

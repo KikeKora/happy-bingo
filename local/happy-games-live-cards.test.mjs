@@ -47,7 +47,7 @@ test('failed point consolidation prevents automatic reset and start advertisemen
 test('Sprint and Swap only offer future thresholds with resolved telemetry',()=>{
  const rule=RULE_MAP.OBS_WARDS_12;
  assert.equal(ruleFeasibleForLate(rule,{gameClock:1500}),false);
- assert.equal(ruleFeasibleForLate(rule,{currentStats:evidence({observerWardsPurchased:12})}),false);
- assert.equal(ruleFeasibleForLate(rule,{currentStats:evidence({observerWardsPurchased:11})}),true);
- assert.equal(ruleFeasibleForLate(rule,{currentStats:evidence({observerWardsPurchased:11}),completedRuleIds:[rule.id]}),false);
+ assert.equal(ruleFeasibleForLate(rule,{currentStats:evidence({observerWardsPurchased:9})}),false);
+ assert.equal(ruleFeasibleForLate(rule,{currentStats:evidence({observerWardsPurchased:8})}),true);
+ assert.equal(ruleFeasibleForLate(rule,{currentStats:evidence({observerWardsPurchased:8}),completedRuleIds:[rule.id]}),false);
 });
