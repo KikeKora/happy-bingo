@@ -16,7 +16,7 @@
     "test-roles": "node --test ./local/happy-games-roles.test.cjs"
   },
   "devDependencies": {
-    "wrangler": "^4.148.0"
+    "wrangler": "^4.151.3"
   },
   "engines": {
     "node": ">=22"
